@@ -1,3 +1,9 @@
 <?php
 
-return [];
+return [
+    /** Middlewares for routes of Web or API */
+    "middleware" => [
+        "web" => "",
+        "api" => "",
+    ]
+];
