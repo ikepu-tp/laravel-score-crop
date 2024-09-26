@@ -69,11 +69,17 @@ tags:
     description: |
       ## テストリソース
       <SchemaDefinition schemaRef="#/components/schemas/ExamResource" />
+  - name: exam.answer
+    x-displayName: 解答
+    description: |
+      ## 解答リソース
+      <SchemaDefinition schemaRef="#/components/schemas/ExamAnswerResource" />
 
 x-tagGroups:
   - name: "テスト"
     tags:
       - exam
+      - exam.answer
 
 paths:
   # テスト問題
@@ -245,6 +251,179 @@ paths:
             テストの登録結果
         "400":
           $ref: "#/components/responses/ErrorResponse"
+  /v1/exams/{examId}/answers:
+    get:
+      summary: テスト解答一覧取得
+      operationId: exam.answer.index
+      deprecated: false
+      description: |
+        テスト解答の一覧を取得します
+      tags:
+        - exam.answer
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: "#/components/parameters/AcceptHeader"
+        - $ref: "#/components/parameters/ContentTypeHeader"
+        - $ref: "#/components/parameters/TokenHeader"
+        - $ref: "#/components/parameters/NonceHeader"
+        - $ref: "#/components/parameters/PerQuery"
+        - $ref: "#/components/parameters/PageQuery"
+        - $ref: "#/components/parameters/OrderQuery"
+        - $ref: "#/components/parameters/KeywordQuery"
+        - $ref: "#/components/parameters/SortQuery"
+        - $ref: "#/components/parameters/FiledsQuery"
+        - $ref: "#/components/parameters/examId"
+      responses:
+        "200":
+          description: |
+            テスト解答の一覧取得結果
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    $ref: "#/components/schemas/SuccessResponseStatus"
+                  payloads:
+                    type: object
+                    properties:
+                      meta:
+                        $ref: "#/components/schemas/PaginationResource"
+                      items:
+                        type: array
+                        $ref: "#/components/schemas/ExamAnswerResource"
+        "400":
+          $ref: "#/components/responses/ErrorResponse"
+    post:
+      summary: テスト解答登録
+      operationId: exam.answer.store
+      deprecated: false
+      description: |
+        テスト解答を登録します
+      tags:
+        - exam.answer
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: "#/components/parameters/AcceptHeader"
+        - $ref: "#/components/parameters/ContentTypeHeader"
+        - $ref: "#/components/parameters/TokenHeader"
+        - $ref: "#/components/parameters/NonceHeader"
+        - $ref: "#/components/parameters/examId"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ExamAnswerResource"
+      responses:
+        "201":
+          description: |
+            テスト解答の登録結果
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    $ref: "#/components/schemas/SuccessResponseStatus"
+                  payloads:
+                    $ref: "#/components/schemas/ExamAnswerResource"
+        "400":
+          $ref: "#/components/responses/ErrorResponse"
+  /v1/exams/{examId}/answers/{answerId}:
+    get:
+      summary: テスト解答取得
+      operationId: exam.answer.show
+      deprecated: false
+      description: |
+        テスト解答を取得します
+      tags:
+        - exam.answer
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: "#/components/parameters/AcceptHeader"
+        - $ref: "#/components/parameters/ContentTypeHeader"
+        - $ref: "#/components/parameters/TokenHeader"
+        - $ref: "#/components/parameters/NonceHeader"
+        - $ref: "#/components/parameters/examId"
+        - $ref: "#/components/parameters/answerId"
+      responses:
+        "200":
+          description: |
+            テスト解答の取得結果
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    $ref: "#/components/schemas/SuccessResponseStatus"
+                  payloads:
+                    $ref: "#/components/schemas/ExamAnswerResource"
+        "400":
+          $ref: "#/components/responses/ErrorResponse"
+    put:
+      summary: テスト解答更新
+      operationId: exam.answer.update
+      deprecated: false
+      description: |
+        テスト解答を更新します
+      tags:
+        - exam.answer
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: "#/components/parameters/AcceptHeader"
+        - $ref: "#/components/parameters/ContentTypeHeader"
+        - $ref: "#/components/parameters/TokenHeader"
+        - $ref: "#/components/parameters/NonceHeader"
+        - $ref: "#/components/parameters/examId"
+        - $ref: "#/components/parameters/answerId"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ExamAnswerResource"
+      responses:
+        "200":
+          description: |
+            テスト解答の更新結果
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    $ref: "#/components/schemas/SuccessResponseStatus"
+                  payloads:
+                    $ref: "#/components/schemas/ExamAnswerResource"
+        "400":
+          $ref: "#/components/responses/ErrorResponse"
+    delete:
+      summary: テスト解答削除
+      operationId: exam.answer.destroy
+      deprecated: false
+      description: |
+        テスト解答を削除します
+      tags:
+        - exam.answer
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: "#/components/parameters/AcceptHeader"
+        - $ref: "#/components/parameters/ContentTypeHeader"
+        - $ref: "#/components/parameters/TokenHeader"
+        - $ref: "#/components/parameters/NonceHeader"
+        - $ref: "#/components/parameters/examId"
+        - $ref: "#/components/parameters/answerId"
+      responses:
+        "204":
+          description: |
+            テスト解答の登録結果
+        "400":
+          $ref: "#/components/responses/ErrorResponse"
 
 components:
   parameters:
@@ -342,6 +521,14 @@ components:
       name: examId
       in: path
       description: テストID
+      required: true
+      schema:
+        type: string
+        example: "5f8d0a9b9d6b9a0017a6d5a0"
+    answerId:
+      name: answerId
+      in: path
+      description: 解答ID
       required: true
       schema:
         type: string
@@ -486,6 +673,31 @@ components:
           type: "number"
           example: 10
           description: 取得予定件数
+    FileResource:
+      type: object
+      properties:
+        fileId:
+          type: string
+          example: "5f8d0a9b9d6b9a0017a6d5a0"
+          readOnly: true
+        name:
+          type: string
+          example: "test1"
+          maxLength: 255
+        url:
+          type: string
+          example: "https://your-project.com/path/to/file"
+        mime_type:
+          type: string
+          example: "application/pdf"
+        created_at:
+          type: string
+          example: "2020-10-20T00:00:00.000000Z"
+          readOnly: true
+        updated_at:
+          type: string
+          example: "2020-10-20T00:00:00.000000Z"
+          readOnly: true
     ExamResource:
       type: object
       required:
@@ -505,6 +717,17 @@ components:
             - "null"
           example: "this is a test."
           maxLength: 1000
+    ExamAnswerResource:
+      type: object
+      properties:
+        scAnswerId:
+          type: string
+          example: "5f8d0a9b9d6b9a0017a6d5a0"
+          readOnly: true
+        pdf:
+          oneOf:
+            - type: "null"
+            - $ref: "#/components/schemas/FileResource"
 
   securitySchemes:
     cookieAuth:
