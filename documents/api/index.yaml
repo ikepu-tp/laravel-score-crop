@@ -60,7 +60,7 @@ info:
     url: "https://github.com/ikepu-tp/laravel-score-crop/blob/main/LICENSE"
 
 servers:
-  - url: http://your-project.com/api
+  - url: http://your-project.com/sc/api
     description: 開発環境サーバ
 
 tags:
@@ -120,6 +120,132 @@ paths:
                         $ref: "#/components/schemas/ExamResource"
         "400":
           $ref: "#/components/responses/ErrorResponse"
+    post:
+      summary: テスト登録
+      operationId: exam.store
+      deprecated: false
+      description: |
+        テストを登録します
+      tags:
+        - exam
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: "#/components/parameters/AcceptHeader"
+        - $ref: "#/components/parameters/ContentTypeHeader"
+        - $ref: "#/components/parameters/TokenHeader"
+        - $ref: "#/components/parameters/NonceHeader"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ExamResource"
+      responses:
+        "201":
+          description: |
+            テストの登録結果
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    $ref: "#/components/schemas/SuccessResponseStatus"
+                  payloads:
+                    $ref: "#/components/schemas/ExamResource"
+        "400":
+          $ref: "#/components/responses/ErrorResponse"
+  /v1/exams/{examId}:
+    get:
+      summary: テスト取得
+      operationId: exam.show
+      deprecated: false
+      description: |
+        テストを取得します
+      tags:
+        - exam
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: "#/components/parameters/AcceptHeader"
+        - $ref: "#/components/parameters/ContentTypeHeader"
+        - $ref: "#/components/parameters/TokenHeader"
+        - $ref: "#/components/parameters/NonceHeader"
+        - $ref: "#/components/parameters/examId"
+      responses:
+        "200":
+          description: |
+            テストの取得結果
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    $ref: "#/components/schemas/SuccessResponseStatus"
+                  payloads:
+                    $ref: "#/components/schemas/ExamResource"
+        "400":
+          $ref: "#/components/responses/ErrorResponse"
+    put:
+      summary: テスト更新
+      operationId: exam.update
+      deprecated: false
+      description: |
+        テストを更新します
+      tags:
+        - exam
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: "#/components/parameters/AcceptHeader"
+        - $ref: "#/components/parameters/ContentTypeHeader"
+        - $ref: "#/components/parameters/TokenHeader"
+        - $ref: "#/components/parameters/NonceHeader"
+        - $ref: "#/components/parameters/examId"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ExamResource"
+      responses:
+        "200":
+          description: |
+            テストの更新結果
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    $ref: "#/components/schemas/SuccessResponseStatus"
+                  payloads:
+                    $ref: "#/components/schemas/ExamResource"
+        "400":
+          $ref: "#/components/responses/ErrorResponse"
+    delete:
+      summary: テスト削除
+      operationId: exam.destroy
+      deprecated: false
+      description: |
+        テストを削除します
+      tags:
+        - exam
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: "#/components/parameters/AcceptHeader"
+        - $ref: "#/components/parameters/ContentTypeHeader"
+        - $ref: "#/components/parameters/TokenHeader"
+        - $ref: "#/components/parameters/NonceHeader"
+        - $ref: "#/components/parameters/examId"
+      responses:
+        "204":
+          description: |
+            テストの登録結果
+        "400":
+          $ref: "#/components/responses/ErrorResponse"
+
 components:
   parameters:
     # リクエストヘッダ
@@ -211,6 +337,15 @@ components:
         type: string
         example: keyword
       required: false
+
+    examId:
+      name: examId
+      in: path
+      description: テストID
+      required: true
+      schema:
+        type: string
+        example: "5f8d0a9b9d6b9a0017a6d5a0"
   responses:
     ErrorResponse:
       description: エラー
@@ -360,6 +495,16 @@ components:
           type: string
           example: "5f8d0a9b9d6b9a0017a6d5a0"
           readOnly: true
+        title:
+          type: string
+          example: "test1"
+          maxLength: 255
+        description:
+          type:
+            - string
+            - "null"
+          example: "this is a test."
+          maxLength: 1000
 
   securitySchemes:
     cookieAuth:
