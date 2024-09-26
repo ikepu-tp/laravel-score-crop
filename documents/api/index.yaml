@@ -1,0 +1,368 @@
+openapi: "3.1.0"
+info:
+  title: "Score Crop API Documentation"
+  version: 0.0.0
+  contact:
+    email: system@licsss.jp
+  description: |
+    ## APIについて
+    基本的にはSPAを実現するために実装しているものであり，一般ユーザーの利用は想定していない。
+    なお，リソースに別のリソースが含まれる場合，特別な指定がない限り，登録・編集時はIDを指定する。
+
+    例えば，
+    ```json
+    {
+      exampleId: "5f8d0a9b9d6b9a0017a6d5a0",
+      exam: {
+        examId: "5f8d0a9b9d6b9a0017a6d5a0",
+        title: "test1",
+      }
+    }
+    ```
+    のリソースにおいて，登録する際は
+    ```json
+    {
+      exam: {
+        examId: "5f8d0a9b9d6b9a0017a6d5a0",
+      }
+    }
+    ```
+    と登録する。
+
+    ## リクエスト
+
+    ヘッダの認証情報をもとにAPI通信を行う。
+
+    ### リクエストヘッダ
+
+    | キー         | 値     | 説明             |
+    | ------------ | ------ | ---------------- |
+    | Accept       | string | application/json |
+    | Content-Type | string | application/json |
+    | X-NONCE      | string | レスポンスの整合性確認用。任意の文字列。 |
+    | X-XSRF-TOKEN | string | API認証キー                 |
+
+    ### 一覧取得リクエストクエリ
+
+    一覧取得リクエストには以下のクエリを指定できる。
+
+    | キー         | 値     | デフォルト値| 説明             |
+    | ------------ | ------ | ---- | ---------------- |
+    | per       | number | 10 | 1回あたりに取得する件数 |
+    | page      | number | 1  | 取得するページ番号 |
+    | order     | string | asc | 取得順。asc：古い順に取得。desc：新しい順に取得 |
+    | keyword   | string | -   | 検索キーワード |
+    | sort      | string | -   | ソート順。語尾に`-`をつけると降順。`,`で複数指定。 |
+    | fields    | string | -   | 取得するフィールド。`,`で複数指定。 |
+
+  license:
+    name: MIT
+    url: "https://github.com/ikepu-tp/laravel-score-crop/blob/main/LICENSE"
+
+servers:
+  - url: http://your-project.com/api
+    description: 開発環境サーバ
+
+tags:
+  - name: "exam"
+    x-displayName: テスト
+    description: |
+      ## テストリソース
+      <SchemaDefinition schemaRef="#/components/schemas/ExamResource" />
+
+x-tagGroups:
+  - name: "テスト"
+    tags:
+      - exam
+
+paths:
+  # テスト問題
+  /v1/exams:
+    get:
+      summary: テスト一覧取得
+      operationId: exam.index
+      deprecated: false
+      description: |
+        テストの一覧を取得します
+      tags:
+        - exam
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: "#/components/parameters/AcceptHeader"
+        - $ref: "#/components/parameters/ContentTypeHeader"
+        - $ref: "#/components/parameters/TokenHeader"
+        - $ref: "#/components/parameters/NonceHeader"
+        - $ref: "#/components/parameters/PerQuery"
+        - $ref: "#/components/parameters/PageQuery"
+        - $ref: "#/components/parameters/OrderQuery"
+        - $ref: "#/components/parameters/KeywordQuery"
+        - $ref: "#/components/parameters/SortQuery"
+        - $ref: "#/components/parameters/FiledsQuery"
+      responses:
+        "200":
+          description: |
+            テストの一覧取得結果
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    $ref: "#/components/schemas/SuccessResponseStatus"
+                  payloads:
+                    type: object
+                    properties:
+                      meta:
+                        $ref: "#/components/schemas/PaginationResource"
+                      items:
+                        type: array
+                        $ref: "#/components/schemas/ExamResource"
+        "400":
+          $ref: "#/components/responses/ErrorResponse"
+components:
+  parameters:
+    # リクエストヘッダ
+    AcceptHeader:
+      name: Accept
+      in: header
+      schema:
+        type: string
+        example: application/json
+        default: application/json
+      required: true
+    ContentTypeHeader:
+      name: Content-Type
+      in: header
+      schema:
+        type: string
+        example: application/json
+        default: application/json
+      required: true
+    TokenHeader:
+      name: X-XSRF-TOKEN
+      in: header
+      schema:
+        type: string
+        example: eyJpdiI6IkNQUWRjbVRhNldGM1JyQThUU~~~~~iIn0=
+      required: true
+    NonceHeader:
+      name: X-NONCE
+      in: header
+      schema:
+        type: string
+        example: 1ec2a3c0
+        maxLength: 32
+      required: true
+    # Indexクエリ系
+    PerQuery:
+      name: per
+      in: query
+      schema:
+        type: number
+        example: 10
+        default: 10
+      required: false
+    PageQuery:
+      name: page
+      in: query
+      schema:
+        type: number
+        example: 1
+        default: 1
+      required: false
+    OrderQuery:
+      name: order
+      in: query
+      description: |
+        取得順
+        |key|note|
+        |-|-|
+        |asc|古い順に取得|
+        |desc|新しい順に取得|
+      schema:
+        type: string
+        example: asc
+        default: asc
+      required: false
+    KeywordQuery:
+      name: keyword
+      in: query
+      description: キーワード検索
+      schema:
+        type: string
+        example: keyword
+      required: false
+    SortQuery:
+      name: sort
+      in: query
+      description: |
+        ソート順。語尾に`-`をつけると降順。`,`で複数指定。
+      schema:
+        type: string
+        example: keyword
+      required: false
+    FiledsQuery:
+      name: fields
+      in: query
+      description: |
+        取得するフィールド。`,`で複数指定。
+      schema:
+        type: string
+        example: keyword
+      required: false
+  responses:
+    ErrorResponse:
+      description: エラー
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                $ref: "#/components/schemas/ErrorResponseStatus"
+              error:
+                $ref: "#/components/schemas/ErrorResource"
+  schemas:
+    SuccessResponseStatus:
+      type: object
+      description: レスポンスステータス
+      properties:
+        result:
+          type: boolean
+          description: 処理結果
+          example: true
+        code:
+          type: integer
+          description: |
+            レスポンスコード
+            | 値     | タイトル              | 説明                                 |
+            | ------ | --------------------- | ------------------------------------ |
+            | 200    | OK                    | 正常に処理完了                       |
+            | 201    | CREATED               | リソースの作成が完了                 |
+            | 204    | NO CONTENT            | 処理完了。送信コンテンツはなし       |
+          example: 200
+        nonce:
+          type: string
+          description: 送信時にヘッダに指定した任意の値
+          example: a0b1c2d3e4f5
+    ErrorResponseStatus:
+      type: object
+      description: レスポンスステータス
+      properties:
+        result:
+          type: boolean
+          description: 処理結果
+          example: false
+        code:
+          type: integer
+          description: |
+            レスポンスコード
+            | 値     | タイトル              | 説明                                 |
+            | ------ | --------------------- | ------------------------------------ |
+            | 400    | BAD REQUEST           | クライアントエラー                   |
+            | 401    | UNAUTHORIEZED         | 認証失敗                             |
+            | 403    | FORBITTEN             | 権限なし                         |
+            | 404    | NOT FOUND             | 存在しない                       |
+            | 405    | METHOD NOT ALLOWED    | 許可されていないメソッド             |
+            | 406    | NOT ACCEPTABLE        | 受付不可能な値，バリデーションエラー |
+            | 409    | CONFLICT              | 他のデータと競合                     |
+            | 429    | TOO MANY REQUESTS     | 過剰リクエスト                      |
+            | 500    | INTERNAL SERVER ERROR | サーバエラー，スクリプトエラー       |
+            | 503    | SERVICE UNAVAILABLE   | サービス利用不可                     |
+          example: 400
+        nonce:
+          type: string
+          description: 送信時にヘッダに指定した任意の値
+          example: a0b1c2d3e4f5
+    ErrorResource:
+      type: object
+      description: エラーリソース
+      properties:
+        abstract:
+          type: string
+          description: エラー概要
+          example: ERROR
+        title:
+          type: string
+          description: エラータイトル
+          example: エラー
+        code:
+          type: integer
+          description: |
+            エラーコード
+            | エラーコード | タイトル                    | 説明                                 |
+            | ------ | --------------------------- | ------------------------------------ |
+            | 400000 | BAD REQUEST                 | クライアントエラー                   |
+            | 401000 | UNAUTHORIEZED               | 認証失敗                             |
+            | 401001 | NOT MATCH EMAIL OR PASSWORD | 認証失敗                             |
+            | 401002 | NOT MATCH PASSWORD          | 認証失敗                             |
+            | 401003 | NOT MATCH CSRF-TOKEN        | CSRFトークン不一致                   |
+            | 401004 | UNUSABLE                    | 利用不可                             |
+            | 403000 | FORBITTEN                   | アクセス不可                         |
+            | 403001 | EDIT FORBITTEN              | 編集不可                             |
+            | 403002 | CREATE FORBITTEN            | 登録不可                             |
+            | 403003 | DELETE FORBITTEN            | 削除不可                             |
+            | 404000 | NOT FOUND                   | 存在しないパス                       |
+            | 404001 | NOT EXIST RECORD            | 存在しないレコード                   |
+            | 405000 | METHOD NOT ALLOWED          | 許可されていないメソッド             |
+            | 406000 | NOT ACCEPTABLE              | 受付不可能な値，バリデーションエラー |
+            | 406001 | LACK PARAMETERS             | パラメータ不足                       |
+            | 406002 | OVER PARAMETERS             | 過剰パラメータ                       |
+            | 406003 | VALIDATION ERROR            | 入力値エラー                         |
+            | 406004 | LACK HEADER                 | ヘッダ不足                           |
+            | 406005 | NOT ACCEPT QUERIES          | クエリ不可                           |
+            | 406006 | NOT VERIFIED EMAIL          | メールアドレス未認証                 |
+            | 406007 | NOT ACCEPT HEADER           | ヘッダ不可                           |
+            | 409000 | CONFLICT                    | 他のデータと競合                     |
+            | 429000 | TOO MANY REQUESTS           | 過剰リクエスト                       |
+            | 500000 | INTERNAL SERVER ERROR       | サーバエラー                         |
+            | 500001 | SCRIPT ERROR                | スクリプトエラー                     |
+            | 500002 | SAVE FAILED                 | 保存失敗                             |
+            | 503000 | SERVICE UNAVAILABLE         | サービス利用不可                     |
+          example: 400000
+        messages:
+          type: array
+          description: エラーメッセージ
+          items:
+            type: string
+            example: エラーメッセージ
+    PaginationResource:
+      type: object
+      description: ページネーションリソース
+      properties:
+        currentPage:
+          type: "number"
+          description: 現在のページ
+          example: 1
+        lastPage:
+          type: "number"
+          example: 1
+          description: 最終ページ
+        getLength:
+          type: "number"
+          example: 10
+          description: 取得件数
+        length:
+          type: "number"
+          example: 10
+          description: 件数
+        per:
+          type: "number"
+          example: 10
+          description: 取得予定件数
+    ExamResource:
+      type: object
+      required:
+        - title
+      properties:
+        scExamId:
+          type: string
+          example: "5f8d0a9b9d6b9a0017a6d5a0"
+          readOnly: true
+
+  securitySchemes:
+    cookieAuth:
+      name: X-XSRF-TOKEN
+      type: apiKey
+      in: "cookie"

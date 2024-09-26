@@ -1,0 +1,9 @@
+services:
+  redoc:
+    image: redocly/redoc
+    environment:
+      - SPEC_URL=docs/index.yaml
+    volumes:
+      - ./documents/api/:/usr/share/nginx/html/docs
+    ports:
+      - '3032:80'
