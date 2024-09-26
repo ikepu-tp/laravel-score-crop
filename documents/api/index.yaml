@@ -74,12 +74,18 @@ tags:
     description: |
       ## 解答リソース
       <SchemaDefinition schemaRef="#/components/schemas/ExamAnswerResource" />
+  - name: exam.answer.image
+    x-displayName: 解答画像
+    description: |
+      ## 解答画像リソース
+      <SchemaDefinition schemaRef="#/components/schemas/ExamAnswerImageResource" />
 
 x-tagGroups:
   - name: "テスト"
     tags:
       - exam
       - exam.answer
+      - exam.answer.image
 
 paths:
   # テスト問題
@@ -123,7 +129,8 @@ paths:
                         $ref: "#/components/schemas/PaginationResource"
                       items:
                         type: array
-                        $ref: "#/components/schemas/ExamResource"
+                        items:
+                          $ref: "#/components/schemas/ExamResource"
         "400":
           $ref: "#/components/responses/ErrorResponse"
     post:
@@ -292,7 +299,8 @@ paths:
                         $ref: "#/components/schemas/PaginationResource"
                       items:
                         type: array
-                        $ref: "#/components/schemas/ExamAnswerResource"
+                        items:
+                          $ref: "#/components/schemas/ExamAnswerResource"
         "400":
           $ref: "#/components/responses/ErrorResponse"
     post:
@@ -331,7 +339,7 @@ paths:
                     $ref: "#/components/schemas/ExamAnswerResource"
         "400":
           $ref: "#/components/responses/ErrorResponse"
-  /v1/exams/{examId}/answers/{answerId}:
+  /v1/exams/{examId}/answers/{examAnswerId}:
     get:
       summary: テスト解答取得
       operationId: exam.answer.show
@@ -348,7 +356,7 @@ paths:
         - $ref: "#/components/parameters/TokenHeader"
         - $ref: "#/components/parameters/NonceHeader"
         - $ref: "#/components/parameters/examId"
-        - $ref: "#/components/parameters/answerId"
+        - $ref: "#/components/parameters/examAnswerId"
       responses:
         "200":
           description: |
@@ -380,7 +388,7 @@ paths:
         - $ref: "#/components/parameters/TokenHeader"
         - $ref: "#/components/parameters/NonceHeader"
         - $ref: "#/components/parameters/examId"
-        - $ref: "#/components/parameters/answerId"
+        - $ref: "#/components/parameters/examAnswerId"
       requestBody:
         content:
           application/json:
@@ -417,11 +425,190 @@ paths:
         - $ref: "#/components/parameters/TokenHeader"
         - $ref: "#/components/parameters/NonceHeader"
         - $ref: "#/components/parameters/examId"
-        - $ref: "#/components/parameters/answerId"
+        - $ref: "#/components/parameters/examAnswerId"
       responses:
         "204":
           description: |
             テスト解答の登録結果
+        "400":
+          $ref: "#/components/responses/ErrorResponse"
+  /v1/exams/{examId}/answers/{examAnswerId}/images:
+    get:
+      summary: テスト解答画像一覧取得
+      operationId: exam.answer.image.index
+      deprecated: false
+      description: |
+        テスト解答画像の一覧を取得します
+      tags:
+        - exam.answer.image
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: "#/components/parameters/AcceptHeader"
+        - $ref: "#/components/parameters/ContentTypeHeader"
+        - $ref: "#/components/parameters/TokenHeader"
+        - $ref: "#/components/parameters/NonceHeader"
+        - $ref: "#/components/parameters/PerQuery"
+        - $ref: "#/components/parameters/PageQuery"
+        - $ref: "#/components/parameters/OrderQuery"
+        - $ref: "#/components/parameters/KeywordQuery"
+        - $ref: "#/components/parameters/SortQuery"
+        - $ref: "#/components/parameters/FiledsQuery"
+        - $ref: "#/components/parameters/examId"
+        - $ref: "#/components/parameters/examAnswerId"
+      responses:
+        "200":
+          description: |
+            テスト解答画像の一覧取得結果
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    $ref: "#/components/schemas/SuccessResponseStatus"
+                  payloads:
+                    type: object
+                    properties:
+                      meta:
+                        $ref: "#/components/schemas/PaginationResource"
+                      items:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/ExamAnswerImageResource"
+        "400":
+          $ref: "#/components/responses/ErrorResponse"
+    post:
+      summary: テスト解答画像登録
+      operationId: exam.answer.image.store
+      deprecated: false
+      description: |
+        テスト解答画像を登録します
+      tags:
+        - exam.answer.image
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: "#/components/parameters/AcceptHeader"
+        - $ref: "#/components/parameters/ContentTypeHeader"
+        - $ref: "#/components/parameters/TokenHeader"
+        - $ref: "#/components/parameters/NonceHeader"
+        - $ref: "#/components/parameters/examId"
+        - $ref: "#/components/parameters/examAnswerId"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ExamAnswerImageResource"
+      responses:
+        "201":
+          description: |
+            テスト解答画像の登録結果
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    $ref: "#/components/schemas/SuccessResponseStatus"
+                  payloads:
+                    $ref: "#/components/schemas/ExamAnswerImageResource"
+        "400":
+          $ref: "#/components/responses/ErrorResponse"
+  /v1/exams/{examId}/answers/{examAnswerId}/images/{examAnswerImageId}:
+    get:
+      summary: テスト解答画像取得
+      operationId: exam.answer.image.show
+      deprecated: false
+      description: |
+        テスト解答画像を取得します
+      tags:
+        - exam.answer.image
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: "#/components/parameters/AcceptHeader"
+        - $ref: "#/components/parameters/ContentTypeHeader"
+        - $ref: "#/components/parameters/TokenHeader"
+        - $ref: "#/components/parameters/NonceHeader"
+        - $ref: "#/components/parameters/examId"
+        - $ref: "#/components/parameters/examAnswerId"
+        - $ref: "#/components/parameters/examAnswerImageId"
+      responses:
+        "200":
+          description: |
+            テスト解答画像の取得結果
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    $ref: "#/components/schemas/SuccessResponseStatus"
+                  payloads:
+                    $ref: "#/components/schemas/ExamAnswerImageResource"
+        "400":
+          $ref: "#/components/responses/ErrorResponse"
+    put:
+      summary: テスト解答画像更新
+      operationId: exam.answer.image.update
+      deprecated: false
+      description: |
+        テスト解答画像を更新します
+      tags:
+        - exam.answer.image
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: "#/components/parameters/AcceptHeader"
+        - $ref: "#/components/parameters/ContentTypeHeader"
+        - $ref: "#/components/parameters/TokenHeader"
+        - $ref: "#/components/parameters/NonceHeader"
+        - $ref: "#/components/parameters/examId"
+        - $ref: "#/components/parameters/examAnswerId"
+        - $ref: "#/components/parameters/examAnswerImageId"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ExamAnswerImageResource"
+      responses:
+        "200":
+          description: |
+            テスト解答画像の更新結果
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    $ref: "#/components/schemas/SuccessResponseStatus"
+                  payloads:
+                    $ref: "#/components/schemas/ExamAnswerImageResource"
+        "400":
+          $ref: "#/components/responses/ErrorResponse"
+    delete:
+      summary: テスト解答画像削除
+      operationId: exam.answer.image.destroy
+      deprecated: false
+      description: |
+        テスト解答画像を削除します
+      tags:
+        - exam.answer.image
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: "#/components/parameters/AcceptHeader"
+        - $ref: "#/components/parameters/ContentTypeHeader"
+        - $ref: "#/components/parameters/TokenHeader"
+        - $ref: "#/components/parameters/NonceHeader"
+        - $ref: "#/components/parameters/examId"
+        - $ref: "#/components/parameters/examAnswerId"
+        - $ref: "#/components/parameters/examAnswerImageId"
+      responses:
+        "204":
+          description: |
+            テスト解答画像の登録結果
         "400":
           $ref: "#/components/responses/ErrorResponse"
 
@@ -525,8 +712,16 @@ components:
       schema:
         type: string
         example: "5f8d0a9b9d6b9a0017a6d5a0"
-    answerId:
-      name: answerId
+    examAnswerId:
+      name: examAnswerId
+      in: path
+      description: 解答ID
+      required: true
+      schema:
+        type: string
+        example: "5f8d0a9b9d6b9a0017a6d5a0"
+    examAnswerImageId:
+      name: examAnswerImageId
       in: path
       description: 解答ID
       required: true
@@ -725,10 +920,34 @@ components:
           example: "5f8d0a9b9d6b9a0017a6d5a0"
           readOnly: true
         pdf:
+          readOnly: true
           oneOf:
             - type: "null"
             - $ref: "#/components/schemas/FileResource"
-
+        pdfFileId:
+          type: string
+          example: "5f8d0a9b9d6b9a0017a6d5a0"
+          writeOnly: true
+    ExamAnswerImageResource:
+      type: object
+      required:
+        - page
+      properties:
+        scAnswerImageId:
+          type: string
+          example: "5f8d0a9b9d6b9a0017a6d5a0"
+          readOnly: true
+        page:
+          type: number
+          example: 1
+        image:
+          readOnly: true
+          allOf:
+            - $ref: "#/components/schemas/FileResource"
+        imageFileId:
+          type: string
+          example: "5f8d0a9b9d6b9a0017a6d5a0"
+          writeOnly: true
   securitySchemes:
     cookieAuth:
       name: X-XSRF-TOKEN
