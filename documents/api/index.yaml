@@ -79,6 +79,17 @@ tags:
     description: |
       ## 解答画像リソース
       <SchemaDefinition schemaRef="#/components/schemas/ExamAnswerImageResource" />
+  - name: exam.answer.area
+    x-displayName: 解答領域
+    description: |
+      ## 解答領域リソース
+      <SchemaDefinition schemaRef="#/components/schemas/ExamAnswerAreaResource" />
+
+  - name: student
+    x-displayName: 生徒
+    description: |
+      ## 生徒リソース
+      <SchemaDefinition schemaRef="#/components/schemas/StudentResource" />
 
 x-tagGroups:
   - name: "テスト"
@@ -86,6 +97,11 @@ x-tagGroups:
       - exam
       - exam.answer
       - exam.answer.image
+      - exam.answer.area
+
+  - name: "生徒"
+    tags:
+      - student
 
 paths:
   # テスト問題
@@ -948,6 +964,151 @@ components:
           type: string
           example: "5f8d0a9b9d6b9a0017a6d5a0"
           writeOnly: true
+    ExamAnswerAreaResource:
+      type: object
+      required:
+        - big_number
+        - score
+        - x
+        - "y"
+        - width
+        - height
+      properties:
+        scAnswerAreaId:
+          type: string
+          example: "5f8d0a9b9d6b9a0017a6d5a0"
+          readOnly: true
+        big_number:
+          type: number
+          example: 1
+        middle_number:
+          type:
+            - number
+            - "null"
+          example: 1
+        small_number:
+          type:
+            - number
+            - "null"
+          example: 1
+        score:
+          type: number
+          example: 1
+          maximum: 100
+        x:
+          type: number
+          example: 0
+        y:
+          type: number
+          example: 0
+        width:
+          type: number
+          example: 100
+        height:
+          type: number
+          example: 100
+    StudentResource:
+      type: object
+      required:
+        - grade
+        - class
+        - number
+        - name
+      properties:
+        scStudentId:
+          type: string
+          example: "5f8d0a9b9d6b9a0017a6d5a0"
+          readOnly: true
+        group_id:
+          type:
+            - string
+            - number
+            - "null"
+          example: "5f8d0a9b9d6b9a0017a6d5a0"
+        grade:
+          type: number
+          example: 1
+        class:
+          type: number
+          example: 1
+        number:
+          type: number
+          example: 1
+        name:
+          type: string
+          example: "name test"
+          maxLength: 255
+        ruby_name:
+          type:
+            - string
+            - "null"
+          example: "name test"
+          format: ^[ぁ-んー\s　]*$
+    StudentAnswerResource:
+      type: object
+      properties:
+        scStudentAnswerId:
+          type: string
+          example: "5f8d0a9b9d6b9a0017a6d5a0"
+          readOnly: true
+        pdf:
+          readOnly: true
+          oneOf:
+            - type: "null"
+            - $ref: "#/components/schemas/FileResource"
+        pdfFileId:
+          type: string
+          example: "5f8d0a9b9d6b9a0017a6d5a0"
+          writeOnly: true
+    StudentAnswerImageResource:
+      type: object
+      required:
+        - imageFileId
+      properties:
+        scStudentAnswerImageId:
+          type: string
+          example: "5f8d0a9b9d6b9a0017a6d5a0"
+          readOnly: true
+        student:
+          $ref: "#/components/schemas/StudentResource"
+        image:
+          readOnly: true
+          allOf:
+            - $ref: "#/components/schemas/FileResource"
+        imageFileId:
+          type: string
+          example: "5f8d0a9b9d6b9a0017a6d5a0"
+          writeOnly: true
+    StudentAnswerTrimmedImageResource:
+      type: object
+      properties:
+        scStudentAnswerTrimmedImageId:
+          type: string
+          example: "5f8d0a9b9d6b9a0017a6d5a0"
+          readOnly: true
+        answer_area:
+          readOnly: true
+          allOf:
+            - $ref: "#/components/schemas/ExamAnswerAreaResource"
+        image:
+          readOnly: true
+          allOf:
+            - $ref: "#/components/schemas/FileResource"
+        imageFileId:
+          type: string
+          example: "5f8d0a9b9d6b9a0017a6d5a0"
+          writeOnly: true
+        score:
+          type: number
+          example: 1
+          maximum: 100
+        feedback:
+          type:
+            - string
+            - "null"
+          example: "feedback"
+          maxLength: 255
+
   securitySchemes:
     cookieAuth:
       name: X-XSRF-TOKEN
