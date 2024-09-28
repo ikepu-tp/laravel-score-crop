@@ -3,7 +3,6 @@
 namespace ikepu_tp\LaravelScoreCrop\app\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 
 /**
  * @property int $id
@@ -18,4 +17,19 @@ use Illuminate\Database\Eloquent\Model;
 class ScStudentAnswerTrimmedImage extends Model
 {
     use HasFactory;
+
+
+    protected $casts = [
+        'id' => 'integer',
+        'scStudentAnswerTrimmedImageId' => 'string',
+        'user_id' => 'integer',
+        'sc_student_answer_image_id' => 'integer',
+        'sc_answer_area_id' => 'integer',
+        'file_id' => 'integer',
+        'score' => 'integer',
+        'feedback' => 'string',
+        "created_at" => "datetime",
+        "updated_at" => "datetime",
+        "deleted_at" => "datetime",
+    ];
 }

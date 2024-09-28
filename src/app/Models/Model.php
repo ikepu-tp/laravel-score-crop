@@ -13,8 +13,19 @@ class Model extends DefaultModel
 
     protected $uuidKey = "id";
 
+    protected $casts = [
+        "created_at" => "datetime",
+        "updated_at" => "datetime",
+        "deleted_at" => "datetime",
+    ];
+
     public function getRouteKeyName()
     {
         return $this->uuidKey;
+    }
+
+    protected function casts(): array
+    {
+        return $this->casts;
     }
 }

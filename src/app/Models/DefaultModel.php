@@ -21,22 +21,16 @@ class DefaultModel extends Model
      */
     protected $uuidKey;
 
-    function __construct(array $attributes = [])
-    {
-        if (
-            !is_null($this->uuidKey) &&
-            $this->uuidKey !== "id" &&
-            !isset($attributes[$this->uuidKey])
-        ) $attributes[$this->uuidKey] = Str::uuid()->toString();
-
-        parent::__construct($attributes);
-    }
-
     static public function getUuidKey(): null|string
     {
         $static = new static;
         if (is_null($static->uuidKey)) return null;
         return $static->uuidKey;
+    }
+
+    function createUuid(): void
+    {
+        $this->{$this->uuidKey} = Str::uuid()->toString();
     }
 
     /**
