@@ -90,6 +90,21 @@ tags:
     description: |
       ## 生徒リソース
       <SchemaDefinition schemaRef="#/components/schemas/StudentResource" />
+  - name: student.answer
+    x-displayName: 生徒解答
+    description: |
+      ## 生徒解答リソース
+      <SchemaDefinition schemaRef="#/components/schemas/StudentAnswerResource" />
+  - name: student.answer.image
+    x-displayName: 生徒解答画像
+    description: |
+      ## 生徒解答画像リソース
+      <SchemaDefinition schemaRef="#/components/schemas/StudentAnswerImageResource" />
+  - name: student.answer.image.trimmed
+    x-displayName: 生徒解答画像領域
+    description: |
+      ## 生徒解答画像領域リソース
+      <SchemaDefinition schemaRef="#/components/schemas/StudentAnswerTrimmedImageResource" />
 
 x-tagGroups:
   - name: "テスト"
@@ -102,6 +117,9 @@ x-tagGroups:
   - name: "生徒"
     tags:
       - student
+      - student.answer
+      - student.answer.image
+      - student.answer.image.trimmed
 
 paths:
   # テスト問題
