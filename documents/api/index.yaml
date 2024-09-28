@@ -144,7 +144,7 @@ paths:
         - $ref: "#/components/parameters/OrderQuery"
         - $ref: "#/components/parameters/KeywordQuery"
         - $ref: "#/components/parameters/SortQuery"
-        - $ref: "#/components/parameters/FiledsQuery"
+        - $ref: "#/components/parameters/FieldsQuery"
       responses:
         "200":
           description: |
@@ -313,7 +313,7 @@ paths:
         - $ref: "#/components/parameters/OrderQuery"
         - $ref: "#/components/parameters/KeywordQuery"
         - $ref: "#/components/parameters/SortQuery"
-        - $ref: "#/components/parameters/FiledsQuery"
+        - $ref: "#/components/parameters/FieldsQuery"
         - $ref: "#/components/parameters/examId"
       responses:
         "200":
@@ -487,7 +487,7 @@ paths:
         - $ref: "#/components/parameters/OrderQuery"
         - $ref: "#/components/parameters/KeywordQuery"
         - $ref: "#/components/parameters/SortQuery"
-        - $ref: "#/components/parameters/FiledsQuery"
+        - $ref: "#/components/parameters/FieldsQuery"
         - $ref: "#/components/parameters/examId"
         - $ref: "#/components/parameters/examAnswerId"
       responses:
@@ -645,6 +645,872 @@ paths:
             テスト解答画像の登録結果
         "400":
           $ref: "#/components/responses/ErrorResponse"
+  /v1/exams/{examId}/answers/{examAnswerId}/images/{examAnswerImageId}/areas:
+    get:
+      summary: 解答画像エリア一覧取得
+      operationId: exam.answer.area.index
+      deprecated: false
+      description: |
+        指定されたテスト解答画像に関連するエリアの一覧を取得します
+      tags:
+        - exam.answer.area
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: "#/components/parameters/AcceptHeader"
+        - $ref: "#/components/parameters/ContentTypeHeader"
+        - $ref: "#/components/parameters/TokenHeader"
+        - $ref: "#/components/parameters/NonceHeader"
+        - $ref: "#/components/parameters/examId"
+        - $ref: "#/components/parameters/examAnswerId"
+        - $ref: "#/components/parameters/examAnswerImageId"
+      responses:
+        "200":
+          description: |
+            解答画像エリアの一覧取得結果
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    $ref: "#/components/schemas/SuccessResponseStatus"
+                  payloads:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/ExamAnswerAreaResource"
+        "400":
+          $ref: "#/components/responses/ErrorResponse"
+    post:
+      summary: 解答画像エリア登録
+      operationId: exam.answer.area.store
+      deprecated: false
+      description: |
+        新しい解答画像エリアを登録します
+      tags:
+        - exam.answer.area
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: "#/components/parameters/AcceptHeader"
+        - $ref: "#/components/parameters/ContentTypeHeader"
+        - $ref: "#/components/parameters/TokenHeader"
+        - $ref: "#/components/parameters/NonceHeader"
+        - $ref: "#/components/parameters/examId"
+        - $ref: "#/components/parameters/examAnswerId"
+        - $ref: "#/components/parameters/examAnswerImageId"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ExamAnswerAreaResource"
+      responses:
+        "201":
+          description: |
+            解答画像エリアの登録結果
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    $ref: "#/components/schemas/SuccessResponseStatus"
+                  payloads:
+                    $ref: "#/components/schemas/ExamAnswerAreaResource"
+        "400":
+          $ref: "#/components/responses/ErrorResponse"
+  ? /v1/exams/{examId}/answers/{examAnswerId}/images/{examAnswerImageId}/areas/{examAnswerAreaId}
+  : get:
+      summary: 解答画像エリア取得
+      operationId: exam.answer.area.show
+      deprecated: false
+      description: |
+        指定された解答画像エリアを取得します
+      tags:
+        - exam.answer.area
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: "#/components/parameters/AcceptHeader"
+        - $ref: "#/components/parameters/ContentTypeHeader"
+        - $ref: "#/components/parameters/TokenHeader"
+        - $ref: "#/components/parameters/NonceHeader"
+        - $ref: "#/components/parameters/examId"
+        - $ref: "#/components/parameters/examAnswerId"
+        - $ref: "#/components/parameters/examAnswerImageId"
+        - $ref: "#/components/parameters/examAnswerAreaId"
+      responses:
+        "200":
+          description: |
+            解答画像エリアの取得結果
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    $ref: "#/components/schemas/SuccessResponseStatus"
+                  payloads:
+                    $ref: "#/components/schemas/ExamAnswerAreaResource"
+        "400":
+          $ref: "#/components/responses/ErrorResponse"
+    put:
+      summary: 解答画像エリア更新
+      operationId: exam.answer.area.update
+      deprecated: false
+      description: |
+        指定された解答画像エリアを更新します
+      tags:
+        - exam.answer.area
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: "#/components/parameters/AcceptHeader"
+        - $ref: "#/components/parameters/ContentTypeHeader"
+        - $ref: "#/components/parameters/TokenHeader"
+        - $ref: "#/components/parameters/NonceHeader"
+        - $ref: "#/components/parameters/examId"
+        - $ref: "#/components/parameters/examAnswerId"
+        - $ref: "#/components/parameters/examAnswerImageId"
+        - $ref: "#/components/parameters/examAnswerAreaId"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ExamAnswerAreaResource"
+      responses:
+        "200":
+          description: |
+            解答画像エリアの更新結果
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    $ref: "#/components/schemas/SuccessResponseStatus"
+                  payloads:
+                    $ref: "#/components/schemas/ExamAnswerAreaResource"
+        "400":
+          $ref: "#/components/responses/ErrorResponse"
+    delete:
+      summary: 解答画像エリア削除
+      operationId: exam.answer.area.destroy
+      deprecated: false
+      description: |
+        指定された解答画像エリアを削除します
+      tags:
+        - exam.answer.area
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: "#/components/parameters/AcceptHeader"
+        - $ref: "#/components/parameters/ContentTypeHeader"
+        - $ref: "#/components/parameters/TokenHeader"
+        - $ref: "#/components/parameters/NonceHeader"
+        - $ref: "#/components/parameters/examId"
+        - $ref: "#/components/parameters/examAnswerId"
+        - $ref: "#/components/parameters/examAnswerImageId"
+        - $ref: "#/components/parameters/examAnswerAreaId"
+      responses:
+        "204":
+          description: |
+            解答画像エリアの削除結果
+        "400":
+          $ref: "#/components/responses/ErrorResponse"
+  /v1/students:
+    get:
+      summary: 学生一覧取得
+      operationId: student.index
+      deprecated: false
+      description: |
+        学生の一覧を取得します
+      tags:
+        - student
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: "#/components/parameters/AcceptHeader"
+        - $ref: "#/components/parameters/ContentTypeHeader"
+        - $ref: "#/components/parameters/TokenHeader"
+        - $ref: "#/components/parameters/NonceHeader"
+        - $ref: "#/components/parameters/PerQuery"
+        - $ref: "#/components/parameters/PageQuery"
+        - $ref: "#/components/parameters/OrderQuery"
+        - $ref: "#/components/parameters/KeywordQuery"
+        - $ref: "#/components/parameters/SortQuery"
+        - $ref: "#/components/parameters/FieldsQuery"
+      responses:
+        "200":
+          description: |
+            学生の一覧取得結果
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    $ref: "#/components/schemas/SuccessResponseStatus"
+                  payloads:
+                    type: object
+                    properties:
+                      meta:
+                        $ref: "#/components/schemas/PaginationResource"
+                      items:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/StudentResource"
+        "400":
+          $ref: "#/components/responses/ErrorResponse"
+    post:
+      summary: 学生登録
+      operationId: student.store
+      deprecated: false
+      description: |
+        学生を登録します
+      tags:
+        - student
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: "#/components/parameters/AcceptHeader"
+        - $ref: "#/components/parameters/ContentTypeHeader"
+        - $ref: "#/components/parameters/TokenHeader"
+        - $ref: "#/components/parameters/NonceHeader"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StudentResource"
+      responses:
+        "201":
+          description: |
+            学生の登録結果
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    $ref: "#/components/schemas/SuccessResponseStatus"
+                  payloads:
+                    $ref: "#/components/schemas/StudentResource"
+        "400":
+          $ref: "#/components/responses/ErrorResponse"
+  /v1/students/{studentId}:
+    get:
+      summary: 学生取得
+      operationId: student.show
+      deprecated: false
+      description: |
+        特定の学生情報を取得します
+      tags:
+        - student
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: "#/components/parameters/AcceptHeader"
+        - $ref: "#/components/parameters/ContentTypeHeader"
+        - $ref: "#/components/parameters/TokenHeader"
+        - $ref: "#/components/parameters/NonceHeader"
+        - $ref: "#/components/parameters/studentId"
+      responses:
+        "200":
+          description: |
+            学生の取得結果
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    $ref: "#/components/schemas/SuccessResponseStatus"
+                  payloads:
+                    $ref: "#/components/schemas/StudentResource"
+        "400":
+          $ref: "#/components/responses/ErrorResponse"
+
+    put:
+      summary: 学生更新
+      operationId: student.update
+      deprecated: false
+      description: |
+        特定の学生情報を更新します
+      tags:
+        - student
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: "#/components/parameters/AcceptHeader"
+        - $ref: "#/components/parameters/ContentTypeHeader"
+        - $ref: "#/components/parameters/TokenHeader"
+        - $ref: "#/components/parameters/NonceHeader"
+        - $ref: "#/components/parameters/studentId"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StudentResource"
+      responses:
+        "200":
+          description: |
+            学生の更新結果
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    $ref: "#/components/schemas/SuccessResponseStatus"
+                  payloads:
+                    $ref: "#/components/schemas/StudentResource"
+        "400":
+          $ref: "#/components/responses/ErrorResponse"
+
+    delete:
+      summary: 学生削除
+      operationId: student.destroy
+      deprecated: false
+      description: |
+        特定の学生情報を削除します
+      tags:
+        - student
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: "#/components/parameters/AcceptHeader"
+        - $ref: "#/components/parameters/ContentTypeHeader"
+        - $ref: "#/components/parameters/TokenHeader"
+        - $ref: "#/components/parameters/NonceHeader"
+        - $ref: "#/components/parameters/studentId"
+      responses:
+        "204":
+          description: |
+            学生の削除成功
+        "400":
+          $ref: "#/components/responses/ErrorResponse"
+  /v1/students/{studentId}/answers:
+    get:
+      summary: 生徒の回答一覧取得
+      operationId: student.answer.index
+      deprecated: false
+      description: |
+        指定された生徒の回答一覧を取得します
+      tags:
+        - student.answer
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: "#/components/parameters/AcceptHeader"
+        - $ref: "#/components/parameters/ContentTypeHeader"
+        - $ref: "#/components/parameters/TokenHeader"
+        - $ref: "#/components/parameters/NonceHeader"
+        - $ref: "#/components/parameters/studentId"
+        - $ref: "#/components/parameters/PerQuery"
+        - $ref: "#/components/parameters/PageQuery"
+        - $ref: "#/components/parameters/OrderQuery"
+        - $ref: "#/components/parameters/KeywordQuery"
+        - $ref: "#/components/parameters/SortQuery"
+        - $ref: "#/components/parameters/FieldsQuery"
+      responses:
+        "200":
+          description: |
+            生徒の回答一覧取得結果
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    $ref: "#/components/schemas/SuccessResponseStatus"
+                  payloads:
+                    type: object
+                    properties:
+                      meta:
+                        $ref: "#/components/schemas/PaginationResource"
+                      items:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/StudentAnswerResource"
+        "400":
+          $ref: "#/components/responses/ErrorResponse"
+    post:
+      summary: 生徒の回答登録
+      operationId: student.answer.store
+      deprecated: false
+      description: |
+        指定された生徒の新しい回答を登録します
+      tags:
+        - student.answer
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: "#/components/parameters/AcceptHeader"
+        - $ref: "#/components/parameters/ContentTypeHeader"
+        - $ref: "#/components/parameters/TokenHeader"
+        - $ref: "#/components/parameters/NonceHeader"
+        - $ref: "#/components/parameters/studentId"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StudentAnswerResource"
+      responses:
+        "201":
+          description: |
+            生徒の回答登録結果
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    $ref: "#/components/schemas/SuccessResponseStatus"
+                  payloads:
+                    $ref: "#/components/schemas/StudentAnswerResource"
+        "400":
+          $ref: "#/components/responses/ErrorResponse"
+  /v1/students/{studentId}/answers/{studentAnswerId}:
+    get:
+      summary: 生徒の回答取得
+      operationId: student.answer.show
+      deprecated: false
+      description: |
+        指定された生徒の特定の回答を取得します
+      tags:
+        - student.answer
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: "#/components/parameters/AcceptHeader"
+        - $ref: "#/components/parameters/ContentTypeHeader"
+        - $ref: "#/components/parameters/TokenHeader"
+        - $ref: "#/components/parameters/NonceHeader"
+        - $ref: "#/components/parameters/studentId"
+        - $ref: "#/components/parameters/studentAnswerId"
+      responses:
+        "200":
+          description: |
+            生徒の回答取得結果
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    $ref: "#/components/schemas/SuccessResponseStatus"
+                  payloads:
+                    $ref: "#/components/schemas/StudentAnswerResource"
+        "400":
+          $ref: "#/components/responses/ErrorResponse"
+    put:
+      summary: 生徒の回答更新
+      operationId: student.answer.update
+      deprecated: false
+      description: |
+        指定された生徒の特定の回答を更新します
+      tags:
+        - student.answer
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: "#/components/parameters/AcceptHeader"
+        - $ref: "#/components/parameters/ContentTypeHeader"
+        - $ref: "#/components/parameters/TokenHeader"
+        - $ref: "#/components/parameters/NonceHeader"
+        - $ref: "#/components/parameters/studentId"
+        - $ref: "#/components/parameters/studentAnswerId"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StudentAnswerResource"
+      responses:
+        "200":
+          description: |
+            生徒の回答更新結果
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    $ref: "#/components/schemas/SuccessResponseStatus"
+                  payloads:
+                    $ref: "#/components/schemas/StudentAnswerResource"
+        "400":
+          $ref: "#/components/responses/ErrorResponse"
+    delete:
+      summary: 生徒の回答削除
+      operationId: student.answer.destroy
+      deprecated: false
+      description: |
+        指定された生徒の特定の回答を削除します
+      tags:
+        - student.answer
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: "#/components/parameters/AcceptHeader"
+        - $ref: "#/components/parameters/ContentTypeHeader"
+        - $ref: "#/components/parameters/TokenHeader"
+        - $ref: "#/components/parameters/NonceHeader"
+        - $ref: "#/components/parameters/studentId"
+        - $ref: "#/components/parameters/studentAnswerId"
+      responses:
+        "204":
+          description: |
+            生徒の回答削除結果
+        "400":
+          $ref: "#/components/responses/ErrorResponse"
+  /v1/students/{studentId}/answers/{studentAnswerId}/images:
+    get:
+      summary: 生徒の回答画像一覧取得
+      operationId: student.answer.image.index
+      deprecated: false
+      description: |
+        指定された生徒の回答に関連する画像の一覧を取得します
+      tags:
+        - student.answer.image
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: "#/components/parameters/AcceptHeader"
+        - $ref: "#/components/parameters/ContentTypeHeader"
+        - $ref: "#/components/parameters/TokenHeader"
+        - $ref: "#/components/parameters/NonceHeader"
+        - $ref: "#/components/parameters/studentId"
+        - $ref: "#/components/parameters/studentAnswerId"
+      responses:
+        "200":
+          description: |
+            生徒の回答画像一覧取得結果
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    $ref: "#/components/schemas/SuccessResponseStatus"
+                  payloads:
+                    type: object
+                    properties:
+                      items:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/StudentAnswerImageResource"
+        "400":
+          $ref: "#/components/responses/ErrorResponse"
+    post:
+      summary: 生徒の回答画像登録
+      operationId: student.answer.image.store
+      deprecated: false
+      description: |
+        指定された生徒の回答に新しい画像を登録します
+      tags:
+        - student.answer.image
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: "#/components/parameters/AcceptHeader"
+        - $ref: "#/components/parameters/ContentTypeHeader"
+        - $ref: "#/components/parameters/TokenHeader"
+        - $ref: "#/components/parameters/NonceHeader"
+        - $ref: "#/components/parameters/studentId"
+        - $ref: "#/components/parameters/studentAnswerId"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StudentAnswerImageResource"
+      responses:
+        "201":
+          description: |
+            生徒の回答画像登録結果
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    $ref: "#/components/schemas/SuccessResponseStatus"
+                  payloads:
+                    $ref: "#/components/schemas/StudentAnswerImageResource"
+        "400":
+          $ref: "#/components/responses/ErrorResponse"
+  ? /v1/students/{studentId}/answers/{studentAnswerId}/images/{studentAnswerImageId}
+  : get:
+      summary: 生徒の回答画像取得
+      operationId: student.answer.image.show
+      deprecated: false
+      description: |
+        指定された生徒の回答の特定の画像を取得します
+      tags:
+        - student.answer.image
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: "#/components/parameters/AcceptHeader"
+        - $ref: "#/components/parameters/ContentTypeHeader"
+        - $ref: "#/components/parameters/TokenHeader"
+        - $ref: "#/components/parameters/NonceHeader"
+        - $ref: "#/components/parameters/studentId"
+        - $ref: "#/components/parameters/studentAnswerId"
+        - $ref: "#/components/parameters/studentAnswerImageId"
+      responses:
+        "200":
+          description: |
+            生徒の回答画像取得結果
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    $ref: "#/components/schemas/SuccessResponseStatus"
+                  payloads:
+                    $ref: "#/components/schemas/StudentAnswerImageResource"
+        "400":
+          $ref: "#/components/responses/ErrorResponse"
+    put:
+      summary: 生徒の回答画像更新
+      operationId: student.answer.image.update
+      deprecated: false
+      description: |
+        指定された生徒の回答の特定の画像を更新します
+      tags:
+        - student.answer.image
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: "#/components/parameters/AcceptHeader"
+        - $ref: "#/components/parameters/ContentTypeHeader"
+        - $ref: "#/components/parameters/TokenHeader"
+        - $ref: "#/components/parameters/NonceHeader"
+        - $ref: "#/components/parameters/studentId"
+        - $ref: "#/components/parameters/studentAnswerId"
+        - $ref: "#/components/parameters/studentAnswerImageId"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StudentAnswerImageResource"
+      responses:
+        "200":
+          description: |
+            生徒の回答画像更新結果
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    $ref: "#/components/schemas/SuccessResponseStatus"
+                  payloads:
+                    $ref: "#/components/schemas/StudentAnswerImageResource"
+        "400":
+          $ref: "#/components/responses/ErrorResponse"
+    delete:
+      summary: 生徒の回答画像削除
+      operationId: student.answer.image.destroy
+      deprecated: false
+      description: |
+        指定された生徒の回答の特定の画像を削除します
+      tags:
+        - student.answer.image
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: "#/components/parameters/AcceptHeader"
+        - $ref: "#/components/parameters/ContentTypeHeader"
+        - $ref: "#/components/parameters/TokenHeader"
+        - $ref: "#/components/parameters/NonceHeader"
+        - $ref: "#/components/parameters/studentId"
+        - $ref: "#/components/parameters/studentAnswerId"
+        - $ref: "#/components/parameters/studentAnswerImageId"
+      responses:
+        "204":
+          description: |
+            生徒の回答画像削除結果
+        "400":
+          $ref: "#/components/responses/ErrorResponse"
+  ? /v1/students/{studentId}/answers/{studentAnswerId}/images/{studentAnswerImageId}/trimmed
+  : get:
+      summary: 生徒のトリミングされた回答画像一覧取得
+      operationId: student.answer.image.trimmed.index
+      deprecated: false
+      description: |
+        指定された生徒の回答に関連するトリミングされた画像の一覧を取得します
+      tags:
+        - student.answer.image.trimmed
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: "#/components/parameters/AcceptHeader"
+        - $ref: "#/components/parameters/ContentTypeHeader"
+        - $ref: "#/components/parameters/TokenHeader"
+        - $ref: "#/components/parameters/NonceHeader"
+        - $ref: "#/components/parameters/studentId"
+        - $ref: "#/components/parameters/studentAnswerId"
+        - $ref: "#/components/parameters/studentAnswerImageId"
+      responses:
+        "200":
+          description: |
+            生徒のトリミングされた回答画像一覧取得結果
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    $ref: "#/components/schemas/SuccessResponseStatus"
+                  payloads:
+                    type: object
+                    properties:
+                      items:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/StudentAnswerTrimmedImageResource"
+        "400":
+          $ref: "#/components/responses/ErrorResponse"
+
+    post:
+      summary: 生徒のトリミングされた回答画像登録
+      operationId: student.answer.image.trimmed.store
+      deprecated: false
+      description: |
+        指定された生徒の回答に新しいトリミングされた画像を登録します
+      tags:
+        - student.answer.image.trimmed
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: "#/components/parameters/AcceptHeader"
+        - $ref: "#/components/parameters/ContentTypeHeader"
+        - $ref: "#/components/parameters/TokenHeader"
+        - $ref: "#/components/parameters/NonceHeader"
+        - $ref: "#/components/parameters/studentId"
+        - $ref: "#/components/parameters/studentAnswerId"
+        - $ref: "#/components/parameters/studentAnswerImageId"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StudentAnswerTrimmedImageResource"
+      responses:
+        "201":
+          description: |
+            生徒のトリミングされた回答画像登録結果
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    $ref: "#/components/schemas/SuccessResponseStatus"
+                  payloads:
+                    $ref: "#/components/schemas/StudentAnswerTrimmedImageResource"
+        "400":
+          $ref: "#/components/responses/ErrorResponse"
+  ? /v1/students/{studentId}/answers/{studentAnswerId}/images/{studentAnswerImageId}/trimmed/{studentAnswerTrimmedImageId}
+  : get:
+      summary: 生徒のトリミングされた回答画像取得
+      operationId: student.answer.image.trimmed.show
+      deprecated: false
+      description: |
+        指定された生徒の回答の特定のトリミングされた画像を取得します
+      tags:
+        - student.answer.image.trimmed
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: "#/components/parameters/AcceptHeader"
+        - $ref: "#/components/parameters/ContentTypeHeader"
+        - $ref: "#/components/parameters/TokenHeader"
+        - $ref: "#/components/parameters/NonceHeader"
+        - $ref: "#/components/parameters/studentId"
+        - $ref: "#/components/parameters/studentAnswerId"
+        - $ref: "#/components/parameters/studentAnswerImageId"
+        - $ref: "#/components/parameters/studentAnswerTrimmedImageId"
+      responses:
+        "200":
+          description: |
+            生徒のトリミングされた回答画像取得結果
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    $ref: "#/components/schemas/SuccessResponseStatus"
+                  payloads:
+                    $ref: "#/components/schemas/StudentAnswerTrimmedImageResource"
+        "400":
+          $ref: "#/components/responses/ErrorResponse"
+    put:
+      summary: 生徒のトリミングされた回答画像更新
+      operationId: student.answer.image.trimmed.update
+      deprecated: false
+      description: |
+        指定された生徒の回答の特定のトリミングされた画像を更新します
+      tags:
+        - student.answer.image.trimmed
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: "#/components/parameters/AcceptHeader"
+        - $ref: "#/components/parameters/ContentTypeHeader"
+        - $ref: "#/components/parameters/TokenHeader"
+        - $ref: "#/components/parameters/NonceHeader"
+        - $ref: "#/components/parameters/studentId"
+        - $ref: "#/components/parameters/studentAnswerId"
+        - $ref: "#/components/parameters/studentAnswerImageId"
+        - $ref: "#/components/parameters/studentAnswerTrimmedImageId"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StudentAnswerTrimmedImageResource"
+      responses:
+        "200":
+          description: |
+            生徒のトリミングされた回答画像更新結果
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    $ref: "#/components/schemas/SuccessResponseStatus"
+                  payloads:
+                    $ref: "#/components/schemas/StudentAnswerTrimmedImageResource"
+        "400":
+          $ref: "#/components/responses/ErrorResponse"
+    delete:
+      summary: 生徒のトリミングされた回答画像削除
+      operationId: student.answer.image.trimmed.destroy
+      deprecated: false
+      description: |
+        指定された生徒の回答の特定のトリミングされた画像を削除します
+      tags:
+        - student.answer.image.trimmed
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: "#/components/parameters/AcceptHeader"
+        - $ref: "#/components/parameters/ContentTypeHeader"
+        - $ref: "#/components/parameters/TokenHeader"
+        - $ref: "#/components/parameters/NonceHeader"
+        - $ref: "#/components/parameters/studentId"
+        - $ref: "#/components/parameters/studentAnswerId"
+        - $ref: "#/components/parameters/studentAnswerImageId"
+        - $ref: "#/components/parameters/studentAnswerTrimmedImageId"
+      responses:
+        "204":
+          description: |
+            生徒のトリミングされた回答画像削除結果
+        "400":
+          $ref: "#/components/responses/ErrorResponse"
 
 components:
   parameters:
@@ -728,7 +1594,7 @@ components:
         type: string
         example: keyword
       required: false
-    FiledsQuery:
+    FieldsQuery:
       name: fields
       in: query
       description: |
@@ -758,6 +1624,46 @@ components:
       name: examAnswerImageId
       in: path
       description: 解答ID
+      required: true
+      schema:
+        type: string
+        example: "5f8d0a9b9d6b9a0017a6d5a0"
+    examAnswerAreaId:
+      name: examAnswerAreaId
+      in: path
+      description: 解答領域ID
+      required: true
+      schema:
+        type: string
+        example: "5f8d0a9b9d6b9a0017a6d5a0"
+    studentId:
+      name: studentId
+      in: path
+      description: 生徒ID
+      required: true
+      schema:
+        type: string
+        example: "5f8d0a9b9d6b9a0017a6d5a0"
+    studentAnswerId:
+      name: studentAnswerId
+      in: path
+      description: 生徒解答ID
+      required: true
+      schema:
+        type: string
+        example: "5f8d0a9b9d6b9a0017a6d5a0"
+    studentAnswerImageId:
+      name: studentAnswerImageId
+      in: path
+      description: 生徒解答画像ID
+      required: true
+      schema:
+        type: string
+        example: "5f8d0a9b9d6b9a0017a6d5a0"
+    studentAnswerTrimmedImageId:
+      name: studentAnswerTrimmedImageId
+      in: path
+      description: 生徒解答画像領域ID
       required: true
       schema:
         type: string
