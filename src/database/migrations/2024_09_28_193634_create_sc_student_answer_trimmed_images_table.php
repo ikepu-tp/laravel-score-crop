@@ -13,7 +13,15 @@ return new class extends Migration
     {
         Schema::create('sc_student_answer_trimmed_images', function (Blueprint $table) {
             $table->id();
+            $table->uuid('scStudentAnswerTrimmedImageId')->unique()->index();
+            $table->foreignId('user_id')->constrained(config("score-crop.user_table"));
+            $table->foreignId('sc_student_answer_image_id')->constrained('sc_student_answer_images');
+            $table->foreignId('sc_answer_area_id')->constrained('sc_answer_areas');
+            $table->foreignId('file_id')->constrained(config('score-crop.file_table'));
+            $table->tinyInteger('score')->default(0);
+            $table->longText('feedback')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
