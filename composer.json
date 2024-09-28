@@ -12,7 +12,8 @@
 	},
 	"require": {
 		"php": "^8.2",
-		"laravel/framework": "^10.8"
+		"laravel/framework": "^10.8",
+		"ikepu-tp/laravel-file-library": "^1.3"
 	},
 	"license": "MIT",
 	"autoload": {
