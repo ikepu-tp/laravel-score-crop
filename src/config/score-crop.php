@@ -11,7 +11,7 @@ return [
     "user_table" => "users",
 
     /** name of Group Table */
-    "group_table" => "",
+    "group_table" => null,
 
     /** name of File Table */
     "file_table" => "files",

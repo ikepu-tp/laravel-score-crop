@@ -15,7 +15,12 @@ return new class extends Migration
             $table->id();
             $table->uuid('scStudentId')->unique()->index();
             $table->foreignId('user_id')->constrained(config('score-crop.user_table'));
-            $table->foreignId('group_id')->nullable()->constrained(config('score-crop.group_table', ""));
+            $groupTable = config('score-crop.group_table');
+            if ($groupTable) {
+                $table->foreignId('group_id')->nullable()->constrained($groupTable);
+            } else {
+                $table->foreignId('group_id')->nullable();
+            }
             $table->tinyInteger('grade');
             $table->tinyInteger('class');
             $table->tinyInteger('number');
