@@ -128,17 +128,17 @@ class Resource extends JsonResource
      * @param array $messages
      * @return JsonResponse
      */
-    static public function failFromException(ErrorException $errorException): JsonResponse
+    static public function failFromException(\Exception $errorException): JsonResponse
     {
         $code = $errorException->getCode();
         $resource = new static(
             $code > 1000 ? (int)substr((string)$code, 0, 3) : $code,
             null,
             (new ErrorResource(
-                $errorException->getAbstract(),
-                $errorException->getTitle(),
+                "Error",
+                "エラー",
                 $code,
-                $errorException->getMessages()
+                [$errorException->getMessage()]
             ))->createArray(),
         );
         return $resource->createResponse();
