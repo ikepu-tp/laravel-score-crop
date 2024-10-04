@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('sc_student_answers', function (Blueprint $table) {
             $table->id();
             $table->uuid('scStudentAnswerId')->unique()->index();
-            $table->foreignId('user_id')->constrained(config('score-crop.user_table'));
+            $table->foreignId('user_id')->constrained(config('score-crop.user.table'));
             $table->foreignId('sc_exam_id')->constrained('sc_exams');
-            $table->foreignId('file_id')->nullable()->constrained(config('score-crop.file_table'));
+            $table->foreignId('file_id')->nullable()->constrained(config('score-crop.file.table'));
             $table->timestamps();
             $table->softDeletes();
         });

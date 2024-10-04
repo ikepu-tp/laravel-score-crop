@@ -8,11 +8,23 @@ return [
     ],
 
     /** name of User Table */
-    "user_table" => "users",
+    "user" => [
+        "table" => "users",
+        "model" => \App\Models\User::class,
+        "id" => "id",
+    ],
 
     /** name of Group Table */
-    "group_table" => null,
+    "group" => [
+        "table" => null, //schools
+        "model" => null, //\App\Models\School::class
+        "id" => "id",
+    ],
 
     /** name of File Table */
-    "file_table" => "files",
+    "file" => [
+        "table" => "files",
+        "model" =>  \ikepu_tp\FileLibrary\app\Models\File::class,
+        "id" => "id",
+    ],
 ];

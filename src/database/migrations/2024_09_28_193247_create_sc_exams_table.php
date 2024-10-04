@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('sc_exams', function (Blueprint $table) {
             $table->id();
             $table->uuid('scExamId')->unique()->index();
-            $table->foreignId('user_id')->constrained(config('score-crop.user_table'));
+            $table->foreignId('user_id')->constrained(config('score-crop.user.table'));
             $table->string('title');
             $table->text('description')->nullable();
             $table->timestamps();

@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('sc_students', function (Blueprint $table) {
             $table->id();
             $table->uuid('scStudentId')->unique()->index();
-            $table->foreignId('user_id')->constrained(config('score-crop.user_table'));
-            $groupTable = config('score-crop.group_table');
+            $table->foreignId('user_id')->constrained(config('score-crop.user.table'));
+            $groupTable = config('score-crop.group.table');
             if ($groupTable) {
                 $table->foreignId('group_id')->nullable()->constrained($groupTable);
             } else {

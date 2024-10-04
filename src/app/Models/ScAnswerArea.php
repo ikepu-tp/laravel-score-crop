@@ -17,6 +17,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property int $y
  * @property int $width
  * @property int $height
+ *
+ * @property \Illuminate\Database\Eloquent\Relations\BelongsTo $user
+ * @property \Illuminate\Database\Eloquent\Relations\BelongsTo|ScAnswerImage $scAnswerImage
+ * @property \Illuminate\Database\Eloquent\Relations\HasMany|\Illuminate\Database\Eloquent\Collection<,ScStudentAnswerTrimmedImage> $scStudentAnswerTrimmedImages
  */
 class ScAnswerArea extends Model
 {
@@ -39,4 +43,27 @@ class ScAnswerArea extends Model
         "updated_at" => "datetime",
         "deleted_at" => "datetime",
     ];
+
+    function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        $user_model = config("score-crop.user.model");
+        if (is_null($user_model)) throw new \Exception("user model is not defined in config/score-crop.php");
+        return $this->belongsTo($user_model, "user_id", config("score-crop.user.id"));
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo|ScAnswerImage
+     */
+    function scAnswerImage(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(ScAnswerImage::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany|\Illuminate\Database\Eloquent\Collection<,ScStudentAnswerTrimmedImage>
+     */
+    function scStudentAnswerTrimmedImages(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(ScStudentAnswerTrimmedImage::class, "sc_student_answer_image_id", "id");
+    }
 }

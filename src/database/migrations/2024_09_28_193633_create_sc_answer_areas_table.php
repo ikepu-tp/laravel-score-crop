@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('sc_answer_areas', function (Blueprint $table) {
             $table->id();
             $table->uuid('scAnswerAreaId')->unique()->index();
-            $table->foreignId('user_id')->constrained(config('score-crop.user_table'));
+            $table->foreignId('user_id')->constrained(config('score-crop.user.table'));
             $table->foreignId('sc_answer_image_id')->constrained('sc_answer_images');
             $table->tinyInteger('big_number');
             $table->tinyInteger('middle_number')->nullable();
