@@ -2,17 +2,25 @@
 
 namespace ikepu_tp\LaravelScoreCrop\app\Http\Resources;
 
-use Illuminate\Http\Request;
+use ikepu_tp\LaravelScoreCrop\app\Models\ScExam;
 
-class ScExamResource extends Resource
+/**
+ * @property ScExam $resource
+ */
+class ScExamResource extends JsonResource
 {
-    /**
-     * Transform the resource into an array.
-     *
-     * @return array<string, mixed>
-     */
-    public function toArray(Request $request): array
+
+    function nullResource()
     {
-        return parent::toArray($request);
+        return null;
+    }
+
+    function createResource()
+    {
+        return [
+            "scExamId" => $this->resource->scExamId,
+            "title" => $this->resource->title,
+            "description" => $this->resource->description,
+        ];
     }
 }

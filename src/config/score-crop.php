@@ -26,5 +26,6 @@ return [
         "table" => "files",
         "model" =>  \ikepu_tp\FileLibrary\app\Models\File::class,
         "id" => "id",
+        "resource" => \ikepu_tp\FileLibrary\app\Http\Resources\FileLibraryResource::class,
     ],
 ];

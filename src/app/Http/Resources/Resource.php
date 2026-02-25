@@ -2,7 +2,6 @@
 
 namespace ikepu_tp\LaravelScoreCrop\app\Http\Resources;
 
-use ikepu_tp\LaravelScoreCrop\app\Exceptions\ErrorException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;

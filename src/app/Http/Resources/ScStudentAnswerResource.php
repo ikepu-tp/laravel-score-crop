@@ -2,17 +2,16 @@
 
 namespace ikepu_tp\LaravelScoreCrop\app\Http\Resources;
 
-use Illuminate\Http\Request;
-
-class ScStudentAnswerResource extends Resource
+class ScStudentAnswerResource extends JsonResource
 {
-    /**
-     * Transform the resource into an array.
-     *
-     * @return array<string, mixed>
-     */
-    public function toArray(Request $request): array
+
+    function nullResource()
     {
-        return parent::toArray($request);
+        return null;
+    }
+
+    function createResource()
+    {
+        return $this->resource;
     }
 }

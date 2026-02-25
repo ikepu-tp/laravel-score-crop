@@ -2,17 +2,26 @@
 
 namespace ikepu_tp\LaravelScoreCrop\app\Http\Resources;
 
-use Illuminate\Http\Request;
+use ikepu_tp\LaravelScoreCrop\app\Models\ScAnswerImage;
 
-class ScAnswerImageResource extends Resource
+/**
+ * @property ScAnswerImage $resource
+ */
+class ScAnswerImageResource extends JsonResource
 {
-    /**
-     * Transform the resource into an array.
-     *
-     * @return array<string, mixed>
-     */
-    public function toArray(Request $request): array
+
+    function nullResource()
     {
-        return parent::toArray($request);
+        return null;
+    }
+
+    function createResource()
+    {
+        $file_resource = config("score-crop.file.resource");
+        return [
+            "scAnswerImageId" => $this->resource->scAnswerImageId,
+            "page" => $this->resource->page,
+            "image" => new $file_resource($this->resource->file),
+        ];
     }
 }
